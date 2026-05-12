@@ -1,22 +1,44 @@
-"""
-URL configuration for config project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework.permissions import AllowAny
+from biblioteca.views import AutorViewSet, LibroViewSet, UsuarioViewSet, PrestamoViewSet
+
+# Se hace un Router de DRF para generar automáticamente todas las URLs de CRUD de cada modelo.
+router = DefaultRouter()
+router.register(r"autores", AutorViewSet, basename="autor")
+router.register(r"libros", LibroViewSet, basename="libro")
+router.register(r"usuarios", UsuarioViewSet, basename="usuario")
+router.register(r"prestamos", PrestamoViewSet, basename="prestamo")
+
+# Se hace un Swagger para que en /api/redoc o /api/docs se genere la documentación de la API.
+schema_view = get_schema_view(
+    openapi.Info(
+        title="API (documentación de la API del sistema de gestión de biblioteca)", # sut itulo
+        default_version="v1", # la version de la api que estamosm anjeando por ejemplo
+        description="Documentacion de la API del sistema de gestión de biblioteca donde se gestionan autores, libros, usuarios y prestamos", 
+        contact=openapi.Contact(email="brayandom1604@gmail.com"), #el contacto de la api que se muestra en la documentacion 
+    ),
+    public=True,
+    permission_classes=[AllowAny],
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # Para el panel de administración de Django.
+    path("admin/", admin.site.urls),
+
+    # Esto para generar el Token.
+    path("api/token/", obtain_auth_token, name="api-token"),
+
+    # Aquí se obtienen todas las rutas CRUD de los modelos.
+    path("api/", include(router.urls)),
+
+    # Aquí se obtiene la documentación de la API en formato Swagger
+    path("api/docs/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),
+
+    # Aquí se obtiene la documentación de la API en formato ReDoc.
+    path("api/redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="redoc-ui"),
 ]

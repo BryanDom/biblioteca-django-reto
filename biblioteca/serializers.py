@@ -46,7 +46,7 @@ class PrestamoSerializer(serializers.ModelSerializer):
         return str(obj.nombre_libro)
 
     def validate(self, datos):
-        """se necesita validar que la fecha de devolución sea posterior a la fecha actual."""
+        # se necesita validar que la fecha de devolución sea posterior a la fecha actual.
         from datetime import date
 
         fecha_devolucion = datos.get("fecha_devolucion_esperada")

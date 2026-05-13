@@ -5,7 +5,10 @@ from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.permissions import AllowAny
-from biblioteca.views import AutorViewSet, LibroViewSet, UsuarioViewSet, PrestamoViewSet
+from biblioteca.views import (
+    AutorViewSet, LibroViewSet, UsuarioViewSet, PrestamoViewSet,
+    lista_prestamo, crear_prestamo, editar_prestamo, eliminar_prestamo,
+)
 
 # Se hace un Router de DRF para generar automáticamente todas las URLs de CRUD de cada modelo.
 router = DefaultRouter()
@@ -41,4 +44,10 @@ urlpatterns = [
 
     # Aquí se obtiene la documentación de la API en formato ReDoc.
     path("api/redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="redoc-ui"),
+
+    #interfaces para prestamos.
+    path("", lista_prestamo, name="lista_prestamo"),
+    path("prestamos/crear/", crear_prestamo, name="crear_prestamo"),
+    path("prestamos/<int:pk>/editar/", editar_prestamo, name="editar_prestamo"),
+    path("prestamos/<int:pk>/eliminar/", eliminar_prestamo, name="eliminar_prestamo"),
 ]

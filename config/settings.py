@@ -89,7 +89,7 @@ USE_TZ = True
 
 # Se realiza la carpeta para los archivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']   # Se realiza la carpeta global para todo los estaticos
+STATICFILES_DIRS = [BASE_DIR / 'static']   # Se realiza la carpeta global para todo los estaticos, por ejemplo para boostrap o algun diseño global,funcion etc.
 STATIC_ROOT = BASE_DIR / 'staticfiles'     # Esto se agrega para los collectstatic
 
 

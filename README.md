@@ -169,9 +169,54 @@ Todos los endpoints requieren autenticacion mediante token, excepto la obtencion
 
 ## Autenticacion por Token
 
-La API utiliza autenticacion por token (Token Authentication de DRF).
+La API utiliza autenticacion por token (Token Authentication de DRF). Puede interactuar con la API utilizando cualquiera de las siguientes herramientas.
 
-### Paso 1: Obtener el token
+---
+
+### Opcion A: Postman (recomendado)
+
+[Postman](https://www.postman.com/) es la herramienta mas comoda para probar APIs REST de forma visual.
+
+**1. Obtener el token:**
+
+- Metodo: `POST`
+- URL: `http://127.0.0.1:8000/api/token/`
+- Pestana `Body` > seleccionar `x-www-form-urlencoded`
+- Agregar los campos:
+  - `username` : `admin`
+  - `password` : `tu_contrasena`
+
+Copie el valor del campo `token` de la respuesta.
+
+**2. Autenticar las siguientes peticiones:**
+
+- En cualquier peticion, vaya a la pestana `Authorization`
+- Tipo: `API Key`
+- Key: `Authorization`
+- Value: `Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
+- Add to: `Header`
+
+A partir de ese momento todas las peticiones enviaran el token automaticamente.
+
+---
+
+### Opcion B: Swagger UI (desde el navegador)
+
+Swagger UI permite probar los endpoints directamente desde el navegador sin instalar nada adicional.
+
+1. Abra `http://127.0.0.1:8000/api/token/` en Swagger UI o use `curl` / Postman para obtener su token.
+2. Ingrese a `http://127.0.0.1:8000/api/docs/`
+3. Haga clic en el boton **Authorize** (icono de candado).
+4. En el campo `tokenAuth` escriba: `Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
+5. Confirme con **Authorize** y cierre el dialogo.
+
+Todos los endpoints del explorador quedaran autenticados durante la sesion.
+
+---
+
+### Opcion C: curl (linea de comandos)
+
+**1. Obtener el token:**
 
 ```bash
 curl -X POST http://127.0.0.1:8000/api/token/ \
@@ -185,9 +230,7 @@ Respuesta:
 }
 ```
 
-### Paso 2: Usar el token en las peticiones
-
-Incluya el token en el encabezado `Authorization` de cada solicitud:
+**2. Usar el token en las peticiones:**
 
 ```bash
 curl http://127.0.0.1:8000/api/autores/ \

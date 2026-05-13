@@ -1,6 +1,6 @@
 # Sistema de Gestion de Biblioteca
 
-Sistema web desarrollado con Django para la administracion de autores, libros, usuarios y prestamos de una biblioteca. Incluye panel de administracion avanzado, API REST con autenticacion por token y documentacion  generada automaticamente con Swagger y ReDoc.
+Sistema web desarrollado con Django para la administracion de autores, libros, usuarios y prestamos de una biblioteca. Incluye panel de administracion avanzado, API REST con autenticacion por token y documentacion generada automaticamente con Swagger y ReDoc.
 
 ---
 
@@ -28,8 +28,8 @@ Sistema web desarrollado con Django para la administracion de autores, libros, u
 | drf-yasg | 1.21.15 | Documentacion automatica OpenAPI / Swagger |
 | django-import-export | 4.4.1 | Importacion y exportacion de datos en el Admin |
 | Bootstrap 5 | 5.x | Framework CSS para la interfaz web |
-| Bootstrap Icons | — | Iconografia en la interfaz web |
-| SQLite | — | Base de datos por defecto de Django |
+| Bootstrap Icons | - | Iconografia en la interfaz web |
+| SQLite | - | Base de datos por defecto de Django |
 
 ---
 
@@ -37,9 +37,9 @@ Sistema web desarrollado con Django para la administracion de autores, libros, u
 
 Antes de instalar el proyecto, asegurese de tener instalado lo siguiente:
 
-- **Python 3.10 o superior** — [https://www.python.org/downloads/](https://www.python.org/downloads/)
-- **pip** — incluido en la instalacion de Python
-- **Git** — [https://git-scm.com/](https://git-scm.com/)
+- **Python 3.10 o superior** - https://www.python.org/downloads/
+- **pip** - incluido en la instalacion de Python
+- **Git** - https://git-scm.com/
 
 ---
 
@@ -81,6 +81,8 @@ pip install -r requirements.txt
 ```bash
 python manage.py migrate
 ```
+
+---
 
 ## Crear el superusuario
 
@@ -169,70 +171,22 @@ Todos los endpoints requieren autenticacion mediante token, excepto la obtencion
 
 ## Autenticacion por Token
 
-La API utiliza autenticacion por token (Token Authentication de DRF). Puede interactuar con la API utilizando cualquiera de las siguientes herramientas.
+La API utiliza autenticacion por token (Token Authentication de DRF). Para obtener el token se realiza una peticion `POST` al endpoint `/api/token/` con las credenciales del usuario, y el token recibido debe enviarse en el encabezado `Authorization` de cada solicitud posterior.
 
----
+Para interactuar con la API se puede utilizar cualquiera de las siguientes herramientas:
 
-### Opcion A: Postman (recomendado)
+- **Postman** - cliente grafico para probar APIs REST (https://www.postman.com/)
+- **Swagger UI** - interfaz web integrada en el proyecto, disponible en `/api/docs/`
+- **curl** - herramienta de linea de comandos incluida en la mayoria de sistemas operativos
 
-[Postman](https://www.postman.com/) es la herramienta mas comoda para probar APIs REST de forma visual.
-
-**1. Obtener el token:**
-
-- Metodo: `POST`
-- URL: `http://127.0.0.1:8000/api/token/`
-- Pestana `Body` > seleccionar `x-www-form-urlencoded`
-- Agregar los campos:
-  - `username` : `admin`
-  - `password` : `tu_contrasena`
-
-Copie el valor del campo `token` de la respuesta.
-
-**2. Autenticar las siguientes peticiones:**
-
-- En cualquier peticion, vaya a la pestana `Authorization`
-- Tipo: `API Key`
-- Key: `Authorization`
-- Value: `Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
-- Add to: `Header`
-
-A partir de ese momento todas las peticiones enviaran el token automaticamente.
-
----
-
-### Opcion B: Swagger UI (desde el navegador)
-
-Swagger UI permite probar los endpoints directamente desde el navegador sin instalar nada adicional.
-
-1. Abra `http://127.0.0.1:8000/api/token/` en Swagger UI o use `curl` / Postman para obtener su token.
-2. Ingrese a `http://127.0.0.1:8000/api/docs/`
-3. Haga clic en el boton **Authorize** (icono de candado).
-4. En el campo `tokenAuth` escriba: `Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
-5. Confirme con **Authorize** y cierre el dialogo.
-
-Todos los endpoints del explorador quedaran autenticados durante la sesion.
-
----
-
-### Opcion C: curl (linea de comandos)
-
-**1. Obtener el token:**
+**Por ejemplo:**
 
 ```bash
+# 1. Obtener el token
 curl -X POST http://127.0.0.1:8000/api/token/ \
   -d "username=admin&password=tu_contrasena"
-```
 
-Respuesta:
-```json
-{
-  "token": "9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
-}
-```
-
-**2. Usar el token en las peticiones:**
-
-```bash
+# 2. Usar el token en una peticion
 curl http://127.0.0.1:8000/api/autores/ \
   -H "Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
 ```
@@ -290,7 +244,7 @@ biblioteca-django-reto/
 
 - CRUD completo para los cuatro modelos expuesto a traves de `DefaultRouter` de DRF.
 - Autenticacion por Token para proteger todos los endpoints.
-- Documentacion interactiva generada automaticamente disponible en `/api/docs/` (Swagger UI) y `/api/redoc/` (ReDoc).
+- Documentacion interactiva disponible en `/api/docs/` (Swagger UI) y `/api/redoc/` (ReDoc).
 
 ### Interfaz web de Prestamos
 

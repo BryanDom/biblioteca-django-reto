@@ -1,11 +1,16 @@
 from rest_framework import serializers
-from .models import Autor, Libro, Usuario, Prestamo
+from .models import Autor, Libro, Usuario, Prestamo, Categoria
 
 
 class AutorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Autor
+        fields = "__all__"
+
+class CategoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categoria
         fields = "__all__"
 
 
@@ -46,12 +51,13 @@ class PrestamoSerializer(serializers.ModelSerializer):
         return str(obj.nombre_libro)
 
     def validate(self, datos):
-        # se necesita validar que la fecha de devolución sea posterior a la fecha actual.
         from datetime import date
 
+        # Valida que la fecha de devolución sea posterior a la fecha actual
         fecha_devolucion = datos.get("fecha_devolucion_esperada")
         if fecha_devolucion and fecha_devolucion < date.today():
             raise serializers.ValidationError(
                 {"fecha_devolucion_esperada": "La fecha de devolución no puede ser en el pasado."}
             )
+
         return datos

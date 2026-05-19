@@ -15,9 +15,29 @@ class Autor(models.Model):
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
 
+class Categoria(models.Model):
+    nombre_categoria = models.CharField(null=True, blank=True, max_length=100, verbose_name="Nombre Categoria")
+    descripcion = models.CharField(null=True, blank=True, max_length=100, verbose_name="Descripcion Categoria")
+
+
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
+        ordering = ["nombre_categoria"]
+
+    def __str__(self):
+        return f"{self.nombre_categoria}"
+
 
 class Libro(models.Model):
     titulo = models.CharField(max_length=255, verbose_name="Título")
+    nombre_categoria = models.ForeignKey(
+        Categoria,
+        null=True, 
+        blank=True,
+        on_delete=models.PROTECT,       # Se evita borrar un autor si tiene libros
+        verbose_name="Categoria"
+    )
     nombre_autor = models.ForeignKey(
         Autor,
         on_delete=models.PROTECT,       # Se evita borrar un autor si tiene libros
@@ -90,3 +110,4 @@ class Prestamo(models.Model):
     def __str__(self):
         estado = "activo" if self.prestamo_activo else "devuelto"
         return f"{self.nombre_usuario} → {self.nombre_libro} ({estado})"
+

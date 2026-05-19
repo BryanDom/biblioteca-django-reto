@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Autor, Libro, Usuario, Prestamo
+from .models import Autor, Libro, Usuario, Prestamo, Categoria
 
 
 @admin.register(Autor)
@@ -12,12 +12,18 @@ class AutorAdmin(ImportExportModelAdmin):
     search_fields = ("nombre", "apellido", "nacionalidad")
     list_filter = ("nacionalidad",)
 
+@admin.register(Categoria)
+class CategoriaAdmin(ImportExportModelAdmin):
+    # Columnas que estan en el listado
+    list_display = ("nombre_categoria", "descripcion")
+    # Se buscan por el 
+    search_fields = ("nombre_categoria", "descripcion")
 
 @admin.register(Libro)
 class LibroAdmin(ImportExportModelAdmin):
-    list_display = ("titulo", "nombre_autor", "numero_isbn", "cantidad_libros_disponibles")
+    list_display = ("titulo", "nombre_categoria", "nombre_autor", "numero_isbn", "cantidad_libros_disponibles")
     search_fields = ("titulo", "numero_isbn", "nombre_autor__nombre", "nombre_autor__apellido")
-    list_filter = ("nombre_autor",)
+    list_filter = ("nombre_autor","nombre_categoria")
     # Aqui se puede editar la cantidad de libros disponibles
     list_editable = ("cantidad_libros_disponibles",)
 

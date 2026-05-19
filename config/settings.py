@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'import_export',
+    'django_filters',
 
     # app principal del proyecto
     'biblioteca',
@@ -104,11 +105,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     # Autenticación por Token (header: Authorization: Token <token>)
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',  # Para Swagger UI
     ],
+    # Paginación global: 10 registros por página en todos los endpoints
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 

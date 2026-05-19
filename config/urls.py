@@ -6,7 +6,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.permissions import AllowAny
 from biblioteca.views import (
-    AutorViewSet, LibroViewSet, UsuarioViewSet, PrestamoViewSet,
+    AutorViewSet, LibroViewSet, UsuarioViewSet, PrestamoViewSet, CategoriaViewSet,
     lista_prestamo, crear_prestamo, editar_prestamo, eliminar_prestamo,
 )
 
@@ -16,6 +16,7 @@ router.register(r"autores", AutorViewSet, basename="autor")
 router.register(r"libros", LibroViewSet, basename="libro")
 router.register(r"usuarios", UsuarioViewSet, basename="usuario")
 router.register(r"prestamos", PrestamoViewSet, basename="prestamo")
+router.register(r"categorias", CategoriaViewSet, basename="categoria")
 
 # Se hace un Swagger para que en /api/redoc o /api/docs se genere la documentación de la API.
 schema_view = get_schema_view(
